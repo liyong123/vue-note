@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <style>
+        .primary {
+            background-color: gray;
+        }
+        .success {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        //定义一个全局组件
+        //内置组件：slot（插槽）
+        Vue.component(('Vbutton'),{
+            props: [
+                'type'
+            ],
+            template:`
+               <button :class='type'>
+                    <slot>按钮</slot>
+               </button>
+            `
+        })
+        //具名插槽
+        Vue.component('NameSlot', {
+            template: `
+               <li>
+                   <slot name='slotOne'></slot>
+                   <slot name='slotTwo'></slot>
+                </li>
+            `
+        })
+        
+        var MainConetent = {
+            template: `
+                <div>
+                    slot插槽
+                    <Vbutton type='primary'>登录</Vbutton>
+                    <Vbutton type='success'>注册</Vbutton>
+                    <Vbutton>退出</Vbutton> 
+                    </br>
+                    具名插槽
+                    <div>
+                       <ul>
+                          <NameSlot>
+                             <h1 slot='slotTwo'>我是插槽1</h1>
+                             <h1 slot='slotOne'>我是插槽2</h1>
+                          </NameSlot> 
+                          
+                       </ul>    
+                    </div> 
+                </div>
+            
+            `
+        }
+
+        var App = {
+            components: {
+                MainConetent
+            },
+            template: `
+                <div>
+                   <div><MainConetent /></div>
+                </div>
+            `
+        }
+        new Vue({
+            el: '#app',
+            data: function() {
+                return {
+                                    
+                }
+            },
+            components: {
+               App
+            },
+            template: `<App />`
+        })
+    
+    </script>
+</body>
+</html>

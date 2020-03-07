@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>计算属性-显示年龄为偶数的学生信息</title>
+    
+</head>
+<body>
+    <div id="app">
+        <div v-for='(item, index) in filterList' :key='item.name'>
+            {{item.name}}---{{item.age}}
+        </div>
+
+    </div>
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var nameList = [
+                       { name: '张三', age: 19 },
+                       { name: '李四', age: 18 },
+                       { name: '王二', age: 21 },
+                       { name: '刘五', age: 20 },
+                   ];
+        new Vue({
+            el: '#app',
+            data: function() {
+                return {
+                   list: nameList,
+                }
+            },
+            computed: {
+                filterList: function() {
+                    let r = this.list.filter((item, i)=> {
+                        return item.age%2 == 0
+                    })
+                    return r
+                }
+            },
+            
+
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue基本使用</title>
+    <style>
+       .box {
+           width: 100px;
+           height: 100px;
+           border-radius: 50px;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           background-color: #000;
+           color: #fff;
+       }
+       .box.active {
+           background-color: #f00;
+       }
+    </style>
+</head>
+<body>
+    <div id="app">
+       <div>
+            <span>{{msg}}</span>
+            <span v-text='1===1'></span>
+            <!-- v-html容易造成xss攻击 ，比如富文本-->
+            <span v-html='vHtmlXss'></span> 
+            <span v-html='vHtml'></span> 
+            <span>{{str.split('').reverse().join('')}}</span>
+            <span>{{ 1<10? '真的':'假的' }} </span>
+       </div>
+       <div>
+          <span v-for= '(item, index) in list' v-bind:key='item.age'>{{item.name}}</span>
+       </div>
+       <div>
+           <ul>
+               <li v-for='(v,k) in objData' v-bind:key='k'>{{k +'：'}}{{v}}</li>
+           </ul>
+       </div>
+       <div v-if="1<2? true: false">v-if</div>
+       <div v-show="1<2? true: false">v-show</div>
+       <!-- 通过对象的方式决定是否显示某个类 v-bind:class也可以写成:class-->
+       <div class="box" v-on:click="clickHandle" v-bind:class='{active:isRed}'><span>点击我</span></div>
+       <div>
+           <input type="text" v-bind:value ='inputValue' v-on:input= "changeValue">
+           <span>{{inputValue}}</span></br>
+           <input type="text" v-model='inputValueModel'>
+           <span>{{inputValueModel}}</span>
+       </div>
+       <!--v-bind:id 可以简写成:id   动态绑定id -->
+       <div :id='idname'>登录</div>
+    </div>
+
+   <!--  引包 -->
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+    <script>
+     /* 创建实例 */
+         var vm = new Vue({
+             el: '#app', //目的地
+             data: {
+                 msg: '你好',
+                 vHtml: '没办法',
+                 vHtmlXss: "钓鱼网站",
+                 str: '天气真好',
+                 list: [
+                     {name: '张三', age: 30 },
+                     {name: '李四', age: 30 },
+                     {name: '王二', age: 30 },
+                 ],
+                 objData:{
+                     name: '刘五',
+                     salary: 2000,
+                 },
+                 isRed: false,
+                 inputValue: '模拟v-model',
+                 inputValueModel: 'v-model',
+                 idname: 'login'
+                 
+             },
+             
+             methods: {
+                //元素使用@绑定事件，是否相当于react中的修饰符
+                clickHandle: function() {
+                    this.isRed = !this.isRed
+                    console.log(this) //$el:#app
+                 },
+                //  clickHandle: () => {
+                //      console.log(this) //Window
+                //  },
+               
+                //  clickHandle: function() {
+                //      setTimeout(function() {
+                //         console.log(this) //Window
+                //      },1000)
+                //  },
+
+                //  clickHandle: function() {
+                //      setTimeout(function() {
+                //         console.log(this) //$el:#app
+                //      }.bind(this),1000)
+                //  },
+
+                // clickHandle: function() {
+                //      var _this = this;
+                //      setTimeout(function() {
+                //         console.log(_this) //$el:#app
+                //      },1000)
+                //  },
+                //模拟双向绑定，v-model
+                changeValue: function(e) {
+                    this.inputValue = e.target.value
+                }
+             }
+         })
+         
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        // 子传父（类似于props事件回调）
+        //在父组件的Child 子组件上绑定自定义事件，（其实相当于prop）
+        //在子组件中触发原生事件，在函数中使用$emit触发自定义的事件
+         Vue.component('Child', {
+            props: [
+                'parentMsg'
+            ],
+            template: `
+               <div>
+                   我是子组件</br>
+                   <span>{{parentMsg}}</span></br>
+                   <input type='text' v-model='parentMsg' @input='changeValue(parentMsg)'/>
+                </div>
+            `,
+            methods: {
+                changeValue: function(v) {
+                    console.log(this._props)
+                    this.$emit('childHandle1',v)//相当于$emit触发父组件传过来的props：childHandle，和微信小程序相似，但是和react不同
+                }
+            }
+
+        })
+        //父传子：（props）
+        //在父组件引用的Child子组件上定义一个属性，传入一个父组件的data值
+        //在子组件的使用props接收
+        Vue.component('Parent',{
+            data: function() {
+                return {
+                    msg: '我是要传的值msg'
+                }
+            },
+            template: `
+                <div>
+                    <span>我是父组件,我传的值是msg：{{msg}}</span>
+                    <Child v-bind:parentMsg='msg' @childHandle1='childHandle'/>
+                </div>
+            `,
+            methods: {
+                childHandle: function(v) {
+                    //v:子组件传过来的值
+                    this.msg = v
+                }
+            }
+        })
+       
+       
+        var App = {
+            components: {
+                
+            },
+            template: `
+                <div>
+                    <Parent />
+                </div>
+            `
+        }
+        new Vue({
+            el: '#app',
+            data: function() {
+
+            },
+            components: {
+               App
+            },
+            template: `<App />`
+        })
+    
+    </script>
+</body>
+</html>

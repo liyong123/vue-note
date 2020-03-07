@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ref</title>
+</head>
+<body>
+    <div id="app">
+       
+    </div>
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        Vue.component('Qjcomponent', {
+            template:`
+                <div class='quanju'>全局组件</div>
+            `
+        })
+       var App = {
+           data: function() {
+                return {
+                    isShow: false
+                }   
+           },
+           template: `
+                <div>
+                   <button ref='btn'>按钮</button>
+                   <Qjcomponent ref='qj' />
+                   <input type='text' ref='input' v-show='isShow' />
+                </div>
+           `,
+           mounted: function() {
+               console.log(this)//它就是一个Object实例对象，其隐式原型__proto__指向的是Object的原型对象
+               console.log(this.$refs.btn)//获取到原生jsDOM对象:button
+               console.log(this.$refs.qj) //如果组件绑定ref，获取的是被绑定ref的这个组件对象
+               
+               this.isShow = true;
+            //    将回调延迟到下次 DOM 更新循环之后执行
+               this.$nextTick(function(){
+                   console.log(this)
+                   this.$refs.input.focus()
+               }.bind(this)) //bind改变回调函数指向，指向此组件，或者回调函数写成箭头函数。
+
+           }
+       } 
+       new Vue({
+           el: '#app',
+           data: function() {
+               return {
+
+               }
+           },
+           components: {
+               App
+           },
+           template: `
+                <div>
+                    <App />
+                </div>
+           `
+       })
+    </script>
+</body>
+</html>

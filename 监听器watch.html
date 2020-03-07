@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>监听器</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model='msg'>
+        <span>{{msg}}</span>
+        <div>
+            <button @click='list[0].name="zhangsan"'>深度监听</button>
+            <span>{{list[0].name}}</span>
+        </div>
+    </div>
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        //基本数据类型，简单监视
+        //复杂数据类型，深度监视
+        new Vue({
+            el: '#app',
+            data: function() {
+                return {
+                    msg: '',
+                    list: [
+                        {name: '李四'}
+                    ]
+                }
+            },
+            //不要用的太多
+            watch: {
+                msg: function(newV, oldV) {
+                   console.log(newV, oldV);
+                   if(newV === 'ly') {
+                       console.log('早上好')
+                   }
+                },
+                //监视对象数据类型 object，array，深度监视
+                list: {
+                    deep: true,
+                    handler: function(newV, oldV) {
+                        console.log(newV[0].name)
+                    }
+                }
+            }
+        })
+     
+    </script>
+</body>
+</html>

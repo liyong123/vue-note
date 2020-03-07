@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>路由嵌套</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script src="./node_modules/vue-router/dist/vue-router.js"></script>
+    <script>
+        var Home= {
+            template: `
+                <div>
+                    <div>首页内容</div>
+                    <div>
+                        <router-link to='/home/song'>歌曲</router-link>
+                        <router-link to='/home/movie'>电影</router-link>
+                        <router-view></router-view>
+                    </div>
+                </div>
+                
+            `,
+            created: function() {
+                
+            }
+        }
+        var Song = {
+            template: `
+                <div>歌曲内容</div>
+            `
+        }
+        var Movie = {
+            template: `
+                <div>电影内容</div>
+            `
+        }
+    
+        //创建VueRouter实例对象
+        var router= new VueRouter({
+            routes: [
+                {
+                    path: '/home', 
+                    name: 'home', 
+                    component: Home,
+                    children: [
+                        {
+                            path: 'song',
+                            component: Song
+                        },
+                        {
+                            path: 'movie',
+                            component: Movie
+                        },
+                    ]
+                }
+
+            ]
+        })
+        //VueRouter: router-link, router-view
+        var App = {
+           template: `
+              <div> 
+                   <router-link :to='{name:"home"}'>首页</router-link>
+                   <router-view></router-view> 
+              </div>
+              
+           `
+        }
+        new Vue({
+            el: '#app',
+            components: {
+                App
+            },
+            //交给vue实例对象
+            router,
+            template: `
+                <div>
+                   <App />
+                </div>
+            `
+        })
+    </script>
+</body>
+</html>

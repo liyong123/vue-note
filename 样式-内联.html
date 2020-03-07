@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>样式内联</title>
+</head>
+<body>
+    <div id="app">
+         <div style="width: 100px; height: 100px; background-color: skyblue"></div>
+         <div style="width: 100px; height: 100px; background-color: skyblue;" 
+              :style="{ border: 'solid 2px #000' }">
+         </div>
+         <!-- css内联样式变量拼接 -->
+         <div style="width: 100px; height: 100px; background-color: green;" 
+              :style="{ border: borderHeight + 'solid red', margin: marginWidth + 'px' }" >
+         </div>
+         <!-- css内联样式放置对象 -->
+         <div :style='styleObj'></div>
+         <!-- css内联样式放置数组 -->
+         <div :style='styleArr'></div>
+    </div>
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: function() {
+                return {
+                    borderHeight: 50,
+                    marginWidth: 20,
+                    styleObj: {
+                        width: '100px',
+                        height: '100px',
+                        backgroundColor: 'red'
+                    },
+                    styleArr: [
+                        {
+                            width: '100px',
+                            height: '100px',
+                            backgroundColor: 'red'
+                        },
+                        {
+                            border: 'solid 2px #000'
+                        }
+                    ]
+                }  
+            },
+
+        })
+    </script>
+</body>
+</html>

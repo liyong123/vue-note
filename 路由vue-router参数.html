@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>路由参数</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script src="./node_modules/vue-router/dist/vue-router.js"></script>
+    <script>
+        //地址栏路由范式
+        //1、xxxx.html#/user/1    params动态路由参数
+        //2、xxxx.html#/user?userId=1   query
+        var UserParams= {
+            template: `
+                <div>我是用户1页面</div>
+            `,
+            created: function() {
+                console.log(this.$router);
+                console.log(this.$route); //获取参数
+            }
+        }
+        var UserQuery= {
+            template: `
+                <div>我是用户2页面</div>
+            `
+        } 
+        //创建VueRouter实例对象
+        var router= new VueRouter({
+            routes: [
+                {
+                    path: '/user/:id', //动态路由匹配 以冒号开头
+                    name: 'userP', //路由重新命名
+                    component: UserParams
+                },
+                {
+                    path: '/user',
+                    name: 'userQ',
+                    component: UserQuery
+                },
+
+            ]
+        })
+        //VueRouter: router-link, router-view
+        var App = {
+           template: `
+              <div> 
+                   <router-link :to='{name:"userP", params: {id: 1}}'>用户1</router-link>
+                   <router-link :to='{name:"userQ", query: {uerId: 2}}'>用户2</router-link>
+                   <router-view></router-view> 
+              </div>
+              
+           `
+        }
+        new Vue({
+            el: '#app',
+            components: {
+                App
+            },
+            //交给vue实例对象
+            router,
+            template: `
+                <div>
+                   <App />
+                </div>
+            `
+        })
+    </script>
+</body>
+</html>

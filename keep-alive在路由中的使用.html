@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>keep-alive在路由中的使用</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script src="./node_modules/vue-router/dist/vue-router.js"></script>
+    <script>
+        
+        var Timeline= {
+            template: `
+                <div>
+                    <div>我是首页</div>
+                    </div>
+                </div>
+            `,
+            created: function() {
+                console.log('首页组件创建了')
+            },
+            mounted: function() {
+                console.log('首页Dom挂载了')
+            },
+            destroyed: function() {
+                console.log('首页组件销毁了')
+            }
+        }
+        var Pins= {
+            template: `
+                <div>
+                    <div @click='clickHandler'>我是沸点</div>
+                </div>
+                
+            `,
+            methods: {
+                clickHandler: function(e) {
+                    e.target.style.color= 'red'
+                }
+            },
+            created: function() {
+                console.log('沸点组件创建了')
+            },
+            mounted: function() {
+                console.log('沸点Dom挂载了')
+            },
+            destroyed: function() {
+                console.log('沸点组件销毁了')
+            }
+        }
+        
+        
+        //创建VueRouter实例对象
+        var router= new VueRouter({
+            routes: [
+                {
+                    path: '/timeline', 
+                    component: Timeline,
+                },
+                {
+                    path: '/pins',
+                    component: Pins,
+                     
+                }
+            ]
+        })
+        //VueRouter: router-link, router-view
+        //keep-live 把路由对应的组件缓存在内存中，这样内存不一直被占用吗？
+        var App = {
+           template: `
+              <div> 
+                   <router-link to='/timeline'>首页</router-link>
+                   <router-link to='/pins'>沸点</router-link>
+                   <keep-alive>
+                        <router-view></router-view> 
+                   </keep-alive>
+              </div>
+              
+           `
+        }
+        new Vue({
+            el: '#app',
+            components: {
+                App
+            },
+            //交给vue实例对象
+            router,
+            template: `
+                <div>
+                   <App />
+                </div>
+            `
+        })
+    </script>
+</body>
+</html>

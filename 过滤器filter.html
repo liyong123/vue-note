@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <style>
+        .primary {
+            background-color: gray;
+        }
+        .success {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+       
+    </div>
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        //全局过滤器
+       Vue.filter('myFilter', function(v) {
+           console.log('全局过滤器this:', this) //Window
+           return v.split('').reverse().join('')
+       })
+        
+        var MainConetent = {
+            data: function() {
+              return {
+                msg: 'hello vue',
+                msg2: 'hello china'
+              }
+            },
+            template: `
+                <div>
+                   <span>{{ msg | myFilter }}</span></br>
+                   <span>{{ msg2 | myFilter2("你好：") }}</span>
+                </div>
+            
+            `,
+            //局部过滤器
+            filters: {
+                myFilter2: function(v, arg) {
+                   console.log('局部过滤器this:', this) //Window
+                   return arg + v.toUpperCase()
+                }
+            }
+        }
+
+        var App = {
+            components: {
+                MainConetent
+            },
+            template: `
+                <div>
+                   <div><MainConetent /></div>
+                </div>
+            `
+        }
+        new Vue({
+            el: '#app',
+            data: function() {
+                return {
+                   msg: 'hello word'                 
+                }
+            },
+            components: {
+               App
+            },
+            template: `
+               <div>
+                  <span>{{msg | myFilter}}</span>
+                  <App />
+               </div>
+            `
+        })
+    
+    </script>
+</body>
+</html>

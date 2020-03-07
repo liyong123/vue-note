@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>样式</title>
+    <style>
+       .divRed {
+           width: 200px;
+           height: 200px;
+           background-color: blue;
+       }
+       .divRed.active {
+           background-color: red;
+       }
+       .divStyleObj {
+           width: 200px;
+           margin-top: 20px;
+           height: 200px;
+           background-color: gray;
+       }
+       .divStyleObj.active{
+           background-color: green;
+       }
+       .divStyleObj.active2 {
+           border-radius: 100px;
+       }
+       .divStyleObj.active2 {
+           border-radius: 100px;
+       }
+       .divStyleObj.col-lg-2 {
+          border: solid 2px #000;  
+       }
+       .divStyleArr {
+           width: 200px;
+           height: 200px;
+           background-color: #aff;
+       }
+       .hunhe {
+           width: 200px;
+           height: 200px;
+           background-color: #daf;
+       }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 对象 -->
+        <div @click='styleToRed' class="divRed" :class='{active: isRed}'></div>
+        <div class="divStyleObj" :class='styleObj'></div>
+        <!-- 数组 -->
+        <div class="divStyleArr" :class='styleArr'></div>
+        <!-- 混合使用 -->
+        <div class="hunhe" :class='hunheStyle'></div>
+    </div>
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: function() {
+                return {
+                    isRed: false,
+                    styleObj: {active: true, active2: true, 'col-lg-2': true}, //‘-’ 一定要加引号
+                    styleArr: [ 'col-xs-12', 'red-bg' ],
+                    hunheStyle: [ 'abc', { active: true } ]
+                }
+            },
+
+            created: function() {
+
+            },
+
+            mounted: function() {
+
+            },
+
+            methods: {
+                styleToRed: function() {
+                    this.isRed = !this.isRed
+                }
+            }
+        })
+    </script>
+</body>
+</html>

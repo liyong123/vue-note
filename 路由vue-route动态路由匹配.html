@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动态路由匹配</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script src="./node_modules/vue-router/dist/vue-router.js"></script>
+    <script>
+        var ComDesc= {
+             data: function() {
+                 return {
+                     msg: ''
+                 }
+             },
+             template: `
+                <div>{{msg}}</div>
+             `,
+             created: function() {
+                 this.msg= 'frontend'
+             },
+             //在当前组件内部监听路由信息的变化
+             watch: {
+                 //监听$route
+                 '$route': function(to, from) {
+                     this.msg= to.params.id//可以根据不同的路由参数，获取相应的页面数据
+                 }
+             }            
+        }
+        var Timeline= {
+            template: `
+                <div>
+                    <div>我是首页</div>
+                    <div>
+                        <router-link :to='{name: "comDesc", params: {id: "frontend"}}'>前端</router-link>
+                        <router-link :to='{name: "comDesc", params: {id: "backend"}}'>后端</router-link>
+                        <router-view></router-view>
+                    </div>
+                </div>
+                
+            `,
+            created: function() {
+                
+            }
+        }
+        var Pins= {
+            template: `
+                <div>
+                    <div>我是沸点</div>
+                </div>
+                
+            `,
+            created: function() {
+                
+            }
+        }
+        
+        
+        //创建VueRouter实例对象
+        var router= new VueRouter({
+            routes: [
+                {
+                    path: '/timeline', 
+                    component: Timeline,
+                    children: [
+                        {
+                            name: 'comDesc',
+                            path: '/timeline/:id', //动态路由
+                            component: ComDesc,
+
+                        },
+                    ]
+                },
+                {
+                    path: '/pins',
+                    component: Pins,
+                     
+                }
+
+            ]
+        })
+        //VueRouter: router-link, router-view
+        var App = {
+           template: `
+              <div> 
+                   <router-link to='/timeline'>首页</router-link>
+                   <router-link to='/pins'>沸点</router-link>
+                   <router-view></router-view> 
+              </div>
+              
+           `
+        }
+        new Vue({
+            el: '#app',
+            components: {
+                App
+            },
+            //交给vue实例对象
+            router,
+            template: `
+                <div>
+                   <App />
+                </div>
+            `
+        })
+    </script>
+</body>
+</html>
